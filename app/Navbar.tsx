@@ -15,12 +15,12 @@ const Navbar = () => {
     <nav className="flex space-x-1 md:space-x-6 border-b mb-5 h-14 items-center text-sm md:text-lg">
       <div className="flex text-sm items-center  md:text-lg">
         <Link href="/">
-          <DiBugsense className="inline w-12 h-12 md:w-24 md:h-24 text-blue-800 " />
+          <DiBugsense className="inline w-20 h-20 text-blue-800 " />
           {/* <span className="text-white bg-blue-700 p-1 rounded-full ">tra</span>
         <span className="text-blue-800">Iss</span> */}
         </Link>
 
-        <p className="  flex items-center font-extrabold text-transparent sm:text-sx xl:text-2xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
+        <p className="flex items-bottom font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
           IssTracker
         </p>
       </div>
