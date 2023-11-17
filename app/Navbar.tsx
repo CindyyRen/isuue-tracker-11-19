@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
@@ -12,21 +12,29 @@ const links = [
 const Navbar = () => {
   const currentPath = usePathname();
   return (
-    <nav className="flex space-x-6 border-b mb-5 h-14 items-center text-lg">
-      <Link href="/">
-        <DiBugsense className="inline w-24 h-24 text-blue-800" />
-        <span className="text-blue-800">Iss</span>
-        <span className="text-white bg-blue-700 p-1 rounded-full ">tra</span>
-      </Link>
-      <ul className="flex space-x-6">
+    <nav className="flex space-x-1 md:space-x-6 border-b mb-5 h-14 items-center text-sm md:text-lg">
+      <div className="flex text-sm items-center  md:text-lg">
+        <Link href="/">
+          <DiBugsense className="inline w-12 h-12 md:w-24 md:h-24 text-blue-800 " />
+          {/* <span className="text-white bg-blue-700 p-1 rounded-full ">tra</span>
+        <span className="text-blue-800">Iss</span> */}
+        </Link>
+
+        <p className="  flex items-center font-extrabold text-transparent sm:text-sx xl:text-2xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
+          IssTracker
+        </p>
+      </div>
+      <ul className="flex  space-x-8 max-sm:hidden">
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={classNames({
-              'text-zinc-900': link.href === currentPath,
+              'text-zinc-700 font-bold underline underline-offset-18':
+                link.href === currentPath,
               'text-zinc-500': link.href !== currentPath,
-              'hover:text-zinc-800 transition-colors': true,
+              ' hover:text-zinc-800 transition-colors underline-offset-18':
+                true,
             })}
           >
             {link.label}
