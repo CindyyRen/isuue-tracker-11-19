@@ -1,5 +1,5 @@
 'use client';
-import { FilePlusIcon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { FilePlusIcon, InfoCircledIcon, PlusIcon } from '@radix-ui/react-icons';
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import SimpleMDE from 'react-simplemde-editor';
@@ -11,18 +11,30 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setIsSubmitting(true);
+      await axios.post('/api/issues0', data);
+      router.push('/issues');
+    } catch (error) {
+      setIsSubmitting(false);
+      setError('An unexpected error occurred.');
+    }
+  });
   return (
     <div className="max-w-xl">
       {error && (
@@ -33,17 +45,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            await axios.post('/api/issues0', data);
-            router.push('/issues');
-          } catch (error) {
-            setError('An unexpected error occurred.');
-          }
-        })}
-      >
+      <form className="space-y-3" onSubmit={onSubmit}>
         <TextField.Root>
           {/* <TextField.Slot>
           <MagnifyingGlassIcon height="16" width="16" />
@@ -70,8 +72,9 @@ const NewIssuePage = () => {
           </Text>
         )} */}
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>
-          <FilePlusIcon width="16" height="16" /> submit issue
+        <Button disabled={isSubmitting}>
+          <PlusIcon width="16" height="16" /> submit issue
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
