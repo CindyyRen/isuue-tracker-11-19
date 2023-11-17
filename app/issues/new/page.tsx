@@ -1,12 +1,18 @@
 'use client';
 import { FilePlusIcon, InfoCircledIcon } from '@radix-ui/react-icons';
-import { Button, Callout, TextArea, TextField } from '@radix-ui/themes';
+import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import SimpleMDE from 'react-simplemde-editor';
 import { useForm, Controller } from 'react-hook-form';
 import 'easymde/dist/easymde.min.css';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createIssueSchema } from '@/app/validationSchemas';
+import { z } from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
+
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const router = useRouter();
@@ -16,7 +22,7 @@ const NewIssuePage = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
   return (
     <div className="max-w-xl">
       {error && (
@@ -44,6 +50,12 @@ const NewIssuePage = () => {
         </TextField.Slot> */}
           <TextField.Input placeholder="title" {...register('title')} />
         </TextField.Root>
+        {/* {errors.title && (
+          <Text color="red" as="p">
+            {errors.title.message}
+          </Text>
+        )} */}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -52,7 +64,12 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
-
+        {/* {errors.description && (
+          <Text color="red" as="p">
+            {errors.description.message}
+          </Text>
+        )} */}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button>
           <FilePlusIcon width="16" height="16" /> submit issue
         </Button>
