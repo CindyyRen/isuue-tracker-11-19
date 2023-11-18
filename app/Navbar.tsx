@@ -4,6 +4,8 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { DiBugsense } from 'react-icons/di';
 import classNames from 'classnames';
+import { useSession } from 'next-auth/react';
+import { Box } from '@radix-ui/themes';
 
 const links = [
   { label: 'Dashboard', href: '/' },
@@ -11,6 +13,7 @@ const links = [
 ];
 const Navbar = () => {
   const currentPath = usePathname();
+  const { status, data: session } = useSession();
   return (
     <nav className="flex space-x-1 md:space-x-6 border-b mb-5 h-14 items-center text-sm md:text-lg">
       <div className="flex text-sm items-center  md:text-lg">
@@ -26,21 +29,30 @@ const Navbar = () => {
       </div>
       <ul className="flex  space-x-8 max-sm:hidden">
         {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={classNames({
-              'text-zinc-700 font-bold underline underline-offset-18':
-                link.href === currentPath,
-              'text-zinc-500': link.href !== currentPath,
-              ' hover:text-zinc-800 transition-colors underline-offset-18':
-                true,
-            })}
-          >
-            {link.label}
-          </Link>
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className={classNames({
+                'text-zinc-700 font-bold underline underline-offset-18':
+                  link.href === currentPath,
+                'text-zinc-500': link.href !== currentPath,
+                ' hover:text-zinc-800 transition-colors underline-offset-18':
+                  true,
+              })}
+            >
+              {link.label}
+            </Link>
+          </li>
         ))}
       </ul>
+      <Box>
+        {status === 'authenticated' && (
+          <Link href="/api/auth/signout">Log out</Link>
+        )}
+        {status === 'unauthenticated' && (
+          <Link href="/api/auth/signin">Login</Link>
+        )}
+      </Box>
     </nav>
   );
 };
