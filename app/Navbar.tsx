@@ -5,7 +5,14 @@ import { usePathname } from 'next/navigation';
 import { DiBugsense } from 'react-icons/di';
 import classNames from 'classnames';
 import { useSession } from 'next-auth/react';
-import { Box, Container, Flex } from '@radix-ui/themes';
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from '@radix-ui/themes';
 
 const links = [
   { label: 'Dashboard', href: '/' },
@@ -26,8 +33,8 @@ const Navbar = () => {
         <span className="text-blue-800">Iss</span> */}
               </Link>
               {/* <p className="font-extrabold text-transparent text-xl  bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-transparent h-full"> */}
-                <p className="flex items-bottom font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
-                ISSTra
+              <p className="flex items-bottom font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
+                ISSTraker
               </p>
               {/* <span className="text-white font-extrabold bg-amber-500 p-1 rounded-full ">
                 ISS
@@ -40,11 +47,13 @@ const Navbar = () => {
                   <Link
                     href={link.href}
                     className={classNames({
-                      'text-zinc-700 font-bold underline underline-offset-18':
+                      'text-zinc-600 font-bold underline underline-offset-18':
                         link.href === currentPath,
                       'text-zinc-500': link.href !== currentPath,
-                      ' hover:text-zinc-800 transition-colors underline-offset-18':
+                      ' hover:text-zinc-600 transition-colors underline-offset-18':
                         true,
+                      // 'nav-link': true,
+                      // '!text-zinc-900': link.href === currentPath,
                     })}
                   >
                     {link.label}
@@ -53,14 +62,7 @@ const Navbar = () => {
               ))}
             </ul>
           </Flex>
-          <Box>
-            {status === 'authenticated' && (
-              <Link href="/api/auth/signout">Log out</Link>
-            )}
-            {status === 'unauthenticated' && (
-              <Link href="/api/auth/signin">Login</Link>
-            )}
-          </Box>
+          <AuthStatus />
         </Flex>
       </Container>
     </nav>
@@ -68,3 +70,40 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const AuthStatus = () => {
+  const { status, data: session } = useSession();
+
+  if (status === 'loading') return null;
+
+  if (status === 'unauthenticated')
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        Login
+      </Link>
+    );
+
+  return (
+    <Box>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Avatar
+            src={session!.user!.image!}
+            fallback="?"
+            size="2"
+            radius="full"
+            className="cursor-pointer"
+          />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Label>
+            <Text size="2">{session!.user!.email}</Text>
+          </DropdownMenu.Label>
+          <DropdownMenu.Item>
+            <Link href="/api/auth/signout">Log out</Link>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </Box>
+  );
+};
