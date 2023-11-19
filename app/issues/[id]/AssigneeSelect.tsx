@@ -1,24 +1,14 @@
 'use client';
 
+import { Issue, User } from '@prisma/client';
 import { Select } from '@radix-ui/themes';
 import axios from 'axios';
 import React from 'react';
-import Skeleton from 'react-loading-skeleton';
 import { useQuery } from '@tanstack/react-query';
-import { Issue, User } from '@prisma/client';
+import { Skeleton } from '@/app/components';
 import toast, { Toaster } from 'react-hot-toast';
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  // const [users, setUsers] = useState<User[]>([]);
-
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     const { data } = await axios.get<User[]>('/api/users');
-  //     setUsers(data);
-  //   };
-
-  //   fetchUsers();
-  // }, []);
   // const {
   //   data: users,
   //   error,
@@ -29,6 +19,17 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   //   staleTime: 60 * 1000, //60s
   //   retry: 3,
   // });
+
+  // const [users, setUsers] = useState<User[]>([]);
+
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     const { data } = await axios.get<User[]>('/api/users');
+  //     setUsers(data);
+  //   };
+
+  //   fetchUsers();
+  // }, []);
   const { data: users, error, isLoading } = useUsers();
   if (isLoading) return <Skeleton />;
   if (error) return null;
@@ -36,6 +37,11 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     axios
       .patch('/api/issues/' + issue.id, {
         assignedToUserId: userId || null,
+        title: issue.title,
+        description: issue.description,
+      })
+      .then((data) => {
+        console.log(data);
       })
       .catch(() => {
         toast.error('Changes could not be saved.');
@@ -43,6 +49,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   };
   return (
     <>
+      {' '}
       <Select.Root
         defaultValue={issue.assignedToUserId || ''}
         onValueChange={assignIssue}
@@ -64,9 +71,6 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
-
-export default AssigneeSelect;
-
 const useUsers = () =>
   useQuery<User[]>({
     queryKey: ['users'],
@@ -74,3 +78,5 @@ const useUsers = () =>
     staleTime: 60 * 1000, //60s
     retry: 3,
   });
+
+export default AssigneeSelect;

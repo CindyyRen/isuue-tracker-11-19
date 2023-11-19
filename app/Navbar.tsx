@@ -48,10 +48,10 @@ const Navbar = () => {
                   <Link
                     href={link.href}
                     className={classNames({
-                      'text-zinc-600 font-bold underline underline-offset-18':
+                      'text-zinc-600 font-bold ':
                         link.href === currentPath,
                       'text-zinc-500': link.href !== currentPath,
-                      ' hover:text-zinc-600 transition-colors underline-offset-18':
+                      ' hover:text-zinc-600 transition-colors':
                         true,
                       // 'nav-link': true,
                       // '!text-zinc-900': link.href === currentPath,

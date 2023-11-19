@@ -20,15 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="p-5">
+    <html lang="en">
       <body className={inter.variable}>
         <QueryClientProvider>
           <AuthProvider>
-            <Theme appearance="light" grayColor="sand" scaling="110%">
-              {/* <Theme appearance="light" accentColor="orange" grayColor="sand" scaling="110%"> */}
+            <Theme accentColor="violet">
               <Navbar />
-              <Container>{children}</Container>
-              {/* <ThemePanel /> */}
+              <main className="p-5">
+                <Container>{children}</Container>
+              </main>
             </Theme>
           </AuthProvider>
         </QueryClientProvider>
