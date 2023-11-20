@@ -24,11 +24,14 @@ export default function RootLayout({
       <body className={inter.variable}>
         <QueryClientProvider>
           <AuthProvider>
-            <Theme accentColor="violet">
+            {/* <Theme accentColor="violet"> */}
+            <Theme accentColor="blue">
+            {/* <Theme accentColor="orange"> */}
               <Navbar />
               <main className="p-5">
                 <Container>{children}</Container>
               </main>
+              {/* <ThemePanel /> */}
             </Theme>
           </AuthProvider>
         </QueryClientProvider>
