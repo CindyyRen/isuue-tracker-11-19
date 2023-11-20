@@ -32,11 +32,11 @@ const Navbar = () => {
                 {/* <DiBugsense className="inline w-12 h-12 text-blue-800 " /> */}
                 {/* <span className="text-white bg-blue-700 p-1 rounded-full ">tra</span>
         <span className="text-blue-800">Iss</span> */}
+                <p className="flex items-bottom font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
+                  ISSTraker
+                </p>
               </Link>
               {/* <p className="font-extrabold text-transparent text-xl  bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 bg-transparent h-full"> */}
-              <p className="flex items-bottom font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 bg-transparent h-full">
-                ISSTraker
-              </p>
               {/* <span className="text-white font-extrabold bg-amber-500 p-1 rounded-full ">
                 ISS
               </span>
@@ -48,11 +48,9 @@ const Navbar = () => {
                   <Link
                     href={link.href}
                     className={classNames({
-                      'text-zinc-600 font-bold ':
-                        link.href === currentPath,
+                      'text-zinc-600 font-bold ': link.href === currentPath,
                       'text-zinc-500': link.href !== currentPath,
-                      ' hover:text-zinc-600 transition-colors':
-                        true,
+                      ' hover:text-zinc-600 transition-colors': true,
                       // 'nav-link': true,
                       // '!text-zinc-900': link.href === currentPath,
                     })}
@@ -94,6 +92,7 @@ const AuthStatus = () => {
             size="2"
             radius="full"
             className="cursor-pointer"
+            referrerPolicy="no-referrer"
           />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
